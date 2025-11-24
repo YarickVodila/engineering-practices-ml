@@ -26,8 +26,8 @@
 │                         the creator's initials, and a short `-` delimited description, e.g.
 │                         `1.0-jqp-initial-data-exploration`.
 │
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         classification_modul and configuration for tools like black
+├── pyproject.toml     <- Project configuration file with package metadata for
+│                         classification_module and configuration for tools like black
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
 │
@@ -39,9 +39,9 @@
 │
 ├── setup.cfg          <- Configuration file for flake8
 │
-└── classification_modul   <- Source code for use in this project.
+└── classification_module   <- Source code for use in this project.
     │
-    ├── __init__.py             <- Makes classification_modul a Python module
+    ├── __init__.py             <- Makes classification_module a Python module
     │
     ├── config.py               <- Store useful variables and configuration
     │
@@ -49,9 +49,9 @@
     │
     ├── features.py             <- Code to create features for modeling
     │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
+    ├── modeling
+    │   ├── __init__.py
+    │   ├── predict.py          <- Code to run model inference with trained models
     │   └── train.py            <- Code to train models
     │
     └── plots.py                <- Code to create visualizations
@@ -59,3 +59,14 @@
 
 --------
 
+## Запуск JupyterLab проекта в Docker
+
+### Шаг 1. Создать образ
+```bash
+docker build -t ml-project .
+```
+
+### Шаг 2. Запуск контейнера
+```bash
+docker run -p 8888:8888 ml-project
+```

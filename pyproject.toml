@@ -3,30 +3,66 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "classification_modul"
+name = "classification_module"
 version = "0.0.1"
-description = "\u041f\u0440\u043e\u0435\u043a\u0442 \u0434\u043b\u044f \u0434\u043e\u043c\u0430\u0448\u043d\u0435\u0433\u043e \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u21161"
-authors = [
-  { name = "Yaroslav" },
-]
-
+description = "Проект для домашнего задания №1"
+authors = [{ name = "Yaroslav" }]
 readme = "README.md"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    
-]
+classifiers = ["Programming Language :: Python :: 3"]
 requires-python = "~=3.11.0"
+dependencies = [
+    "ipython>=9.7.0",
+    "jupyterlab>=4.5.0",
+    "matplotlib>=3.10.7",
+    "notebook>=7.5.0",
+    "numpy>=2.3.5",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+]
 
-
+# ============ Ruff Configuration ============
 [tool.ruff]
+# Максимальная длина строки
 line-length = 99
-src = ["classification_modul"]
-include = ["pyproject.toml", "classification_modul/**/*.py"]
+
+# Где искать исходный код (для импортов и путей)
+src = ["classification_module"]
+
+# Явно указываем, какие файлы обрабатывать (опционально, но безопасно)
+include = ["classification_module/**/*.py"]
+
+# Исключаем всё, что не в src (защита от случайного форматирования .gitignore и т.п.)
+exclude = [
+    ".git",
+    ".venv",
+    ".idea",
+    ".vscode",
+    "__pycache__",
+    "*.ipynb",
+    "notebooks/",
+    "data/",
+    "models/",
+    "reports/",
+    "docs/",
+    "tests/",  # если появятся
+]
 
 [tool.ruff.lint]
-extend-select = ["I"]  # Add import sorting
+# Включаем базовые правила + сортировку импортов
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]  # длина строки — не линтерская ошибка, а форматтерская
+
+# Агрессивное исправление при --fix
+fixable = ["ALL"]
+unfixable = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["classification_modul"]
+known-first-party = ["classification_module"]
 force-sort-within-sections = true
+combine-as-imports = true
 
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
