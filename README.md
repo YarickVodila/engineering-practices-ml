@@ -1,12 +1,10 @@
-# hw_1
+# Отчёт по домашней работе №1
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Проект для домашнего задания №1
-
-## Project Organization
+## Структура проекта
 
 ```
 ├── LICENSE            <- Open-source license if one is chosen
@@ -59,7 +57,63 @@
 
 --------
 
-## Запуск JupyterLab проекта в Docker
+### Шаблон
+
+Использовался `cookiecutter-data-science` в качестве шаблона с ручной настройкой
+
+## Качество кода
+
+1. Создан файл `.pre-commit-config.yaml`
+   1. `Ruff` (линтер + автоисправление) - Анализирует все Python-файлы (*.py) на предмет:
+      - Синтаксических ошибок (как SyntaxError)
+      - Проблем стиля (PEP 8, именование, пробелы и т.д.)
+      - Устаревшего кода (например, is вместо == для чисел)
+      - Опасных паттернов (например, мутабельные аргументы по умолчанию)
+      - С флагом --fix — автоматически исправляет всё, что можно (например, сортировка импортов, удаление неиспользуемых импортов, исправление цитат).
+      - С флагом --exit-non-zero-on-fix — если были внесены исправления, хук завершается с ошибкой, и вы должны заново добавить (git add) файлы и повторить коммит.
+    2. `ruff-format` (форматтер)
+      - Форматирует все Python-файлы в соответствии с настройками из `pyproject.toml`:
+        - Длина строки (line-length)
+        - Стиль кавычек ("double" или 'single')
+        - Отступы (пробелы/табы)
+        - Расстановка запятых, скобок, переносов и т.д.
+      - Не принимает --fix, потому что ruff format всегда применяет изменения.
+    3. `trailing-whitespace`
+      - Находит и удаляет лишние пробелы и табы в конце строк.
+      - Такие пробелы:
+        - Загрязняют диффы в Git
+        - Могут вызывать предупреждения в некоторых редакторах
+        - Не несут полезной информации
+    4. `end-of-file-fixer`
+      - Гарантирует, что каждый файл заканчивается ровно одним символом новой строки (\n).
+
+## Управление зависимостями
+
+Используется `uv` для управления зависимостями
+
+### Установка для Windows
+
+```bash
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### Запуск окружения
+```bash
+uv venv
+
+# Активация (Linux/macOS)
+.venv/bin/activate
+
+# Активация (Windows)
+.venv\Scripts\activate
+
+# Установка зависимостей из pyproject.toml
+uv pip install -e .
+
+# Либо через requirements.txt
+uv pip install -r requirements.txt
+```
+### Запуск JupyterLab проекта в Docker
 
 ### Шаг 1. Создать образ
 ```bash
@@ -70,3 +124,5 @@ docker build -t ml-project .
 ```bash
 docker run -p 8888:8888 ml-project
 ```
+
+![jupyter_lab](reports/figures/jupyter_lab.png)
