@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "classification_modul"
+version = "0.0.1"
+description = "\u041f\u0440\u043e\u0435\u043a\u0442 \u0434\u043b\u044f \u0434\u043e\u043c\u0430\u0448\u043d\u0435\u0433\u043e \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u21161"
+authors = [
+  { name = "Yaroslav" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    
+]
+requires-python = "~=3.11.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["classification_modul"]
+include = ["pyproject.toml", "classification_modul/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["classification_modul"]
+force-sort-within-sections = true
+
