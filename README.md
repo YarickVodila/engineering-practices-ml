@@ -81,13 +81,22 @@ dvc pull
 ```bash
 mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
 ```
+### Пример сравнения версий модели
+
+![alt text](reports/figures/mlflow_versions.png)
 
 ### Пример эксперимента
 ![alt text](reports/figures/mlflow_main.png)
 
+### Пример схемы данных для модели
+
+![alt text](reports/figures/mlflow_shema.png)
+
 ### Пример метрик
 
 ![alt text](reports/figures/mlflow_metric.png)
+
+
 
 ### Пример загрузки эксперимента в `MLflow`
 
