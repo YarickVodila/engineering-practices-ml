@@ -1,4 +1,4 @@
-# Отчёт по домашней работе №1
+# Отчёт по домашней работе №2. Версионирование данных и моделей
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
@@ -7,119 +7,16 @@
 ## Работа с ветками
 
 - `hw1` - Домашнее задание №1
-- `hw2` - Домашнее задание №2
+- `hw2` - **Домашнее задание №2**
 - `hw3` - Домашнее задание №3
 - `hw4` - Домашнее задание №4
 - `hw5` - Домашнее задание №5
 - `hw6` - Домашнее задание №6
 
 
-## Структура проекта
+>Для версионирования данных использовался `DVC` для версионирования моделей использовался `MLFlow`
 
-```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for
-│                         classification_module and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── classification_module   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes classification_module a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling
-    │   ├── __init__.py
-    │   ├── predict.py          <- Code to run model inference with trained models
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
-```
-
---------
-
-### Шаблон
-
-Использовался `cookiecutter-data-science` в качестве шаблона с ручной настройкой
-
-## Качество кода
-
-### Настроены `pre-commit hooks` и создан файл `.pre-commit-config.yaml`
-1. `Ruff` (линтер + автоисправление) - Анализирует все Python-файлы (*.py) на предмет:
-   - Синтаксических ошибок (как SyntaxError)
-   - Проблем стиля (PEP 8, именование, пробелы и т.д.)
-   - Устаревшего кода (например, is вместо == для чисел)
-   - Опасных паттернов (например, мутабельные аргументы по умолчанию)
-   - С флагом --fix — автоматически исправляет всё, что можно (например, сортировка импортов, удаление неиспользуемых импортов, исправление цитат).
-   - С флагом --exit-non-zero-on-fix — если были внесены исправления, хук завершается с ошибкой, и вы должны заново добавить (git add) файлы и повторить коммит.
-2. `ruff-format` (форматтер)
-   - Форматирует все Python-файлы в соответствии с настройками из `pyproject.toml`:
-     - Длина строки (line-length)
-     - Стиль кавычек ("double" или 'single')
-     - Отступы (пробелы/табы)
-     - Расстановка запятых, скобок, переносов и т.д.
-   - Не принимает --fix, потому что ruff format всегда применяет изменения.
-3. `trailing-whitespace`
-   - Находит и удаляет лишние пробелы и табы в конце строк.
-   - Такие пробелы:
-     - Загрязняют диффы в Git
-     - Могут вызывать предупреждения в некоторых редакторах
-     - Не несут полезной информации
-4. `end-of-file-fixer`
-   - Гарантирует, что каждый файл заканчивается ровно одним символом новой строки (\n).
-
-### Форматирование кода и линтинг с помощью Ruff
-
-Создан файл `pyproject.toml` в котором есть настройка форматирование через `Ruff`
-
-#### Проверка вручную:
-
-```bash
-uv run ruff check .
-uv run ruff format .
-```
-
-
-## Управление зависимостями
-
-Используется `uv` для управления зависимостями
-
-### Установка для Windows
-
-```bash
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-### Запуск окружения
+## Запуск окружения
 ```bash
 uv venv
 
@@ -135,16 +32,91 @@ uv pip install -e .
 # Либо через requirements.txt
 uv pip install -r requirements.txt
 ```
-### Запуск JupyterLab проекта в Docker
 
-### Шаг 1. Создать образ
+
+## Настройка `DVC`
+
+### Шаг 1. Инициализируем DVC
 ```bash
-docker build -t ml-project .
+dvc init
+
+git add .dvc/
+
+git commit -m "Initialize DVC"
 ```
 
-### Шаг 2. Запуск контейнера
+### Шаг 2. Добавление хранилища
 ```bash
-docker run -p 8888:8888 ml-project
+dvc remote add -d myremote data
+
+git add .dvc/config
+
+git commit -m "Add local DVC remote"
 ```
 
-![jupyter_lab](reports/figures/jupyter_lab.png)
+### Шаг 3. Загрузка данных
+```bash
+dvc add data/
+git add data.dvc .gitignore
+git commit -m "Add versioned dataset"
+dvc push  # загружает данные в remote
+```
+
+![alt text](reports/figures/image.png)
+
+### Шаг 4. Выгрузка данных из удалённого хранилища
+```bash
+dvc pull
+```
+
+## Автоматизация выгрузки данных из `DVC`
+
+В DockerFile основного проекта выполнятся `dvc pull` на этапе сборки
+
+## Настройка `MLFlow`
+
+### Шаг 1. Создаём папку mlflow
+
+### Шаг 2. Запускаем MLFlow
+```bash
+mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
+```
+
+### Пример эксперимента
+![alt text](reports/figures/mlflow_main.png)
+
+### Пример метрик
+
+![alt text](reports/figures/mlflow_metric.png)
+
+### Пример загрузки эксперимента в `MLflow`
+
+Данный код находится в ноутбуке `notebooks\linear_regression.ipynb`
+
+```python
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("test-experiment")
+
+with mlflow.start_run():
+    # Логируем метаданные
+    mlflow.log_param("random_state", 12345)
+    mlflow.log_param("max_iter", 200)
+    mlflow.log_metric("accuracy", accuracy)
+
+    # Логируем модель с сигнатурой
+    signature = mlflow.models.infer_signature(test.drop(columns=["Id", "Species"]), model.predict(test.drop(columns=["Id", "Species"])))
+    mlflow.sklearn.log_model(
+        sk_model = model,
+        name = "model",
+        registered_model_name="LinearRegression_v1",
+        signature=signature,
+    )
+```
+
+## Запуск проекта в Docker
+
+### Шаг 1. Запуск JupyterLab
+
+```bash
+docker-compose up --build
+```

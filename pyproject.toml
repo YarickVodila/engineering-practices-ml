@@ -11,9 +11,11 @@ readme = "README.md"
 classifiers = ["Programming Language :: Python :: 3"]
 requires-python = "~=3.11.0"
 dependencies = [
+    "dvc[dvcfs]>=3.64.2",
     "ipython>=9.7.0",
     "jupyterlab>=4.5.0",
     "matplotlib>=3.10.7",
+    "mlflow>=3.7.0",
     "notebook>=7.5.0",
     "numpy>=2.3.5",
     "pandas>=2.3.3",

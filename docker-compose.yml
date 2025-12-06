@@ -1,0 +1,23 @@
+services:
+  mlflow:
+    build:
+      context: .               # ← контекст — корень проекта
+      dockerfile: mlflow/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow/mlruns:/app/mlruns
+      - ./mlflow//mlflow.db:/app/mlflow.db
+    networks:
+      - mlflow-net
+
+  jupyter-lab:
+    build: .
+    ports:
+      - "8888:8888"
+    networks:
+      - mlflow-net
+
+networks:
+  mlflow-net:
+    driver: bridge
