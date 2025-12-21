@@ -5,8 +5,8 @@ stages:
     deps:
     - path: classification_module/dataset.py
       hash: md5
-      md5: b2e8004129ee15915906074c8a2fcf2d
-      size: 520
+      md5: 30873dd4e76574b9df76d8ebef3dd4ce
+      size: 507
     outs:
     - path: data/iris.csv
       hash: md5
@@ -18,8 +18,8 @@ stages:
     deps:
     - path: classification_module/features.py
       hash: md5
-      md5: df8bcb30f34218c6eddf610955b0a5f4
-      size: 669
+      md5: 0cf5bca32e37c2ddc70c3e6eab2f08f0
+      size: 673
     - path: data/iris.csv
       hash: md5
       md5: 21d441a28bce4417276097df955afc50
@@ -38,16 +38,16 @@ stages:
     deps:
     - path: classification_module/modeling/train.py
       hash: md5
-      md5: d43528a77ec9444565b19d6d01c5c7c6
-      size: 1038
+      md5: 2f833f1d21ef307b8bc3f25d81d92130
+      size: 1044
     - path: conf/config.yaml
       hash: md5
-      md5: 083269cbda5d940046f876b6f4cef93f
-      size: 193
+      md5: c260af61a3818d58673eef26f8ff5684
+      size: 195
     - path: conf/model/random_forest.yaml
       hash: md5
-      md5: cba622a2bd37d4cb311e6a394e9ad59b
-      size: 64
+      md5: 7dfe37fe620b18b0c1b3602a2f08cae1
+      size: 66
     - path: data/processed/iris_X.csv
       hash: md5
       md5: 743c9f03b776e468c517b941773fe713
@@ -58,13 +58,13 @@ stages:
       size: 458
     - path: scripts/train_with_hydra.py
       hash: md5
-      md5: cfa5d76437d6e36e961aa6fd321dad07
-      size: 305
+      md5: e5af273aedc28bb645f2dda7889f229c
+      size: 309
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 06b91613fe7c924f482c7446054878e8
-      size: 176129
+      md5: a310555d25598f4d6b6ac2a8b2593f4e
+      size: 179825
   predict:
     cmd: python classification_module/modeling/predict.py --model
       models/model.pkl --X data/processed/iris_X.csv --output
@@ -72,18 +72,18 @@ stages:
     deps:
     - path: classification_module/modeling/predict.py
       hash: md5
-      md5: b928ebe6847af52004fe4c5e52f7c9c6
-      size: 627
+      md5: 8f5addf15822f63131002af71cddb9d8
+      size: 635
     - path: data/processed/iris_X.csv
       hash: md5
       md5: 743c9f03b776e468c517b941773fe713
       size: 2621
     - path: models/model.pkl
       hash: md5
-      md5: 06b91613fe7c924f482c7446054878e8
-      size: 176129
+      md5: a310555d25598f4d6b6ac2a8b2593f4e
+      size: 179825
     outs:
     - path: reports/predictions.csv
       hash: md5
-      md5: 79f589858e486d999d3b3c44a6a5affe
+      md5: 08f636d2abf53b516c9256f91f12df7a
       size: 462
