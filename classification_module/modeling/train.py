@@ -1,30 +1,33 @@
 from pathlib import Path
 
-from loguru import logger
-from tqdm import tqdm
-import typer
+import hydra
+import joblib
+from omegaconf import DictConfig
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 
-from classification_module.config import MODELS_DIR, PROCESSED_DATA_DIR
 
-app = typer.Typer()
+def get_model(cfg: DictConfig):
+    if cfg.model.name == "RandomForest":
+        return RandomForestClassifier(**cfg.model.params)
+    elif cfg.model.name == "LogisticRegression":
+        return LogisticRegression(**cfg.model.params)
+    else:
+        raise ValueError(f"Unknown model: {cfg.model.name}")
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    features_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
-    model_path: Path = MODELS_DIR / "model.pkl",
-    # -----------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Training some model...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Modeling training complete.")
-    # -----------------------------------------
+@hydra.main(config_path="../../conf", config_name="config", version_base=None)
+def main(cfg: DictConfig):
+    X = pd.read_csv(cfg.data.processed_prefix + "_X.csv")
+    y = pd.read_csv(cfg.data.processed_prefix + "_y.csv").squeeze()
+    model = get_model(cfg)
+    model.fit(X, y)
+
+    Path(cfg.model_path).parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(model, cfg.model_path)
+    print(f"Trained {cfg.model.name}, saved to {cfg.model_path}")
 
 
 if __name__ == "__main__":
-    app()
+    main()

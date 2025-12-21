@@ -1,29 +1,23 @@
+import argparse
 from pathlib import Path
 
-from loguru import logger
-from tqdm import tqdm
-import typer
-
-from classification_module.config import PROCESSED_DATA_DIR
-
-app = typer.Typer()
+import pandas as pd
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    # -----------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Generating features from dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Features generation complete.")
-    # -----------------------------------------
+def main(input_path: str, output_path: str):
+    df = pd.read_csv(input_path)
+    X = df.drop(columns=["target"])
+    y = df["target"]
+
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    X.to_csv(f"{output_path}_X.csv", index=False)
+    y.to_csv(f"{output_path}_y.csv", index=False)
+    print(f"Features saved to {output_path}_*.csv")
 
 
 if __name__ == "__main__":
-    app()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", required=True)
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+    main(args.input, args.output)

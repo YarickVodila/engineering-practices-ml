@@ -1,30 +1,21 @@
-from pathlib import Path
+import argparse
 
-from loguru import logger
-from tqdm import tqdm
-import typer
-
-from classification_module.config import MODELS_DIR, PROCESSED_DATA_DIR
-
-app = typer.Typer()
+import joblib
+import pandas as pd
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    features_path: Path = PROCESSED_DATA_DIR / "test_features.csv",
-    model_path: Path = MODELS_DIR / "model.pkl",
-    predictions_path: Path = PROCESSED_DATA_DIR / "test_predictions.csv",
-    # -----------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Performing inference for model...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Inference complete.")
-    # -----------------------------------------
+def main(model_path: str, X_path: str, output_path: str):
+    model = joblib.load(model_path)
+    X = pd.read_csv(X_path)
+    preds = model.predict(X)
+    pd.DataFrame({"prediction": preds}).to_csv(output_path, index=False)
+    print(f"Predictions saved to {output_path}")
 
 
 if __name__ == "__main__":
-    app()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", required=True)
+    parser.add_argument("--X", required=True)
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+    main(args.model, args.X, args.output)

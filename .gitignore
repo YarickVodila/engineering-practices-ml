@@ -129,6 +129,13 @@ ipython_config.py
 .pdm-python
 .pdm-build/
 
+
+data/
+models/
+logs/
+.dvc/cache/
+
+
 # pixi
 #   pixi.lock should be committed to version control for reproducibility
 #   .pixi/ contains the environments and should not be committed

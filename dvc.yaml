@@ -1,0 +1,37 @@
+stages:
+  get_data:
+    cmd: python classification_module/dataset.py --output data/iris.csv
+    deps:
+      - classification_module/dataset.py
+    outs:
+      - data/iris.csv
+
+  featurize:
+    cmd: python classification_module/features.py --input data/iris.csv --output data/processed/iris
+    deps:
+      - classification_module/features.py
+      - data/iris.csv
+    outs:
+      - data/processed/iris_X.csv
+      - data/processed/iris_y.csv
+
+  train:
+    cmd: python scripts/train_with_hydra.py model=random_forest
+    deps:
+      - scripts/train_with_hydra.py
+      - classification_module/modeling/train.py
+      - data/processed/iris_X.csv
+      - data/processed/iris_y.csv
+      - conf/config.yaml
+      - conf/model/random_forest.yaml
+    outs:
+      - models/model.pkl
+
+  predict:
+    cmd: python classification_module/modeling/predict.py --model models/model.pkl --X data/processed/iris_X.csv --output reports/predictions.csv
+    deps:
+      - classification_module/modeling/predict.py
+      - models/model.pkl
+      - data/processed/iris_X.csv
+    outs:
+      - reports/predictions.csv

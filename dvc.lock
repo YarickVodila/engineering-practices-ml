@@ -1,0 +1,89 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python classification_module/dataset.py --output data/iris.csv
+    deps:
+    - path: classification_module/dataset.py
+      hash: md5
+      md5: b2e8004129ee15915906074c8a2fcf2d
+      size: 520
+    outs:
+    - path: data/iris.csv
+      hash: md5
+      md5: 21d441a28bce4417276097df955afc50
+      size: 2928
+  featurize:
+    cmd: python classification_module/features.py --input data/iris.csv --output
+      data/processed/iris
+    deps:
+    - path: classification_module/features.py
+      hash: md5
+      md5: df8bcb30f34218c6eddf610955b0a5f4
+      size: 669
+    - path: data/iris.csv
+      hash: md5
+      md5: 21d441a28bce4417276097df955afc50
+      size: 2928
+    outs:
+    - path: data/processed/iris_X.csv
+      hash: md5
+      md5: 743c9f03b776e468c517b941773fe713
+      size: 2621
+    - path: data/processed/iris_y.csv
+      hash: md5
+      md5: 0c5aae4fd447e5853eff6d7534815504
+      size: 458
+  train:
+    cmd: python scripts/train_with_hydra.py model=random_forest
+    deps:
+    - path: classification_module/modeling/train.py
+      hash: md5
+      md5: d43528a77ec9444565b19d6d01c5c7c6
+      size: 1038
+    - path: conf/config.yaml
+      hash: md5
+      md5: 083269cbda5d940046f876b6f4cef93f
+      size: 193
+    - path: conf/model/random_forest.yaml
+      hash: md5
+      md5: cba622a2bd37d4cb311e6a394e9ad59b
+      size: 64
+    - path: data/processed/iris_X.csv
+      hash: md5
+      md5: 743c9f03b776e468c517b941773fe713
+      size: 2621
+    - path: data/processed/iris_y.csv
+      hash: md5
+      md5: 0c5aae4fd447e5853eff6d7534815504
+      size: 458
+    - path: scripts/train_with_hydra.py
+      hash: md5
+      md5: cfa5d76437d6e36e961aa6fd321dad07
+      size: 305
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 06b91613fe7c924f482c7446054878e8
+      size: 176129
+  predict:
+    cmd: python classification_module/modeling/predict.py --model
+      models/model.pkl --X data/processed/iris_X.csv --output
+      reports/predictions.csv
+    deps:
+    - path: classification_module/modeling/predict.py
+      hash: md5
+      md5: b928ebe6847af52004fe4c5e52f7c9c6
+      size: 627
+    - path: data/processed/iris_X.csv
+      hash: md5
+      md5: 743c9f03b776e468c517b941773fe713
+      size: 2621
+    - path: models/model.pkl
+      hash: md5
+      md5: 06b91613fe7c924f482c7446054878e8
+      size: 176129
+    outs:
+    - path: reports/predictions.csv
+      hash: md5
+      md5: 79f589858e486d999d3b3c44a6a5affe
+      size: 462

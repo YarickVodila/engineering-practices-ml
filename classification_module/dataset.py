@@ -1,29 +1,19 @@
+import argparse
 from pathlib import Path
 
-from loguru import logger
-from tqdm import tqdm
-import typer
-
-from classification_module.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
-
-app = typer.Typer()
+from sklearn.datasets import load_iris
 
 
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = RAW_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    # ----------------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Processing dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Processing dataset complete.")
-    # -----------------------------------------
+def main(output_path: str):
+    data = load_iris(as_frame=True)
+    df = data.frame
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(output_path, index=False)
+    print(f"Dataset saved to {output_path}")
 
 
 if __name__ == "__main__":
-    app()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+    main(args.output)
